@@ -1,4 +1,13 @@
-# Usando Eclipse Temurin 21
+# Usando Maven para compilar a aplicação
+FROM maven:3.9.9-eclipse-temurin-17 AS build
+WORKDIR /app
+
+COPY pom.xml /app/
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# Usando Eclipse Temurin 21 para a imagem final
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
