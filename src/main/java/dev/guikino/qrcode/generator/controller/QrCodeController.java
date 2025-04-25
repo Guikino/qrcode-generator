@@ -24,9 +24,11 @@ public class QrCodeController {
       try {
           QrCodeGenerateResponse response = this.qrCodeService.generateAndUploadQrCode(request.text());
           return ResponseEntity.ok(response);
-      } catch(Exception e){
-            return  ResponseEntity.internalServerError().build();
-      }
+      }   catch(Exception e){
+        e.printStackTrace(); // ou logger.error("Erro ao gerar QR", e);
+        return ResponseEntity.internalServerError().build();
     }
+
+}
 
 }

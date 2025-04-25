@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 
 @Component
@@ -29,19 +30,24 @@ public class CloudinaryStorageAdapter implements StoragePort {
 
     @Override
     public String uploadFile(byte[] fileData, String fileName, String contentType) {
-        try {
-            InputStream inputStream = new ByteArrayInputStream(fileData);
+        return uploadFile(new ByteArrayInputStream(fileData));
+    }
 
-            Map uploadResult = cloudinary.uploader().upload(inputStream, ObjectUtils.asMap(
-                    "public_id", fileName,
-                    "folder", "qr-codes",
-                    "overwrite", true,
-                    "resource_type", "image"
-            ));
+
+    @Override
+    public String uploadFile(ByteArrayInputStream inputStream) {
+        try {
+            byte[] bytes = inputStream.readAllBytes();
+            String base64 = Base64.getEncoder().encodeToString(bytes);
+            String dataUrl = "data:image/png;base64," + base64;
+
+            Map uploadResult = cloudinary.uploader().upload(dataUrl, ObjectUtils.emptyMap());
+            System.out.println("Resultado do Cloudinary: " + uploadResult);
 
             return (String) uploadResult.get("secure_url");
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException("Erro ao enviar imagem para o Cloudinary", e);
         }
     }
+
 }
