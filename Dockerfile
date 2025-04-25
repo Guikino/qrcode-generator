@@ -6,7 +6,8 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurim:21-jre
+# Usando uma imagem base OpenJDK para o ambiente de execução
+FROM openjdk:21-jre
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
