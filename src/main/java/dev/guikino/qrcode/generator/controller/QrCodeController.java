@@ -20,15 +20,15 @@ public class QrCodeController {
 
     //post
     @PostMapping
-    public ResponseEntity<QrCodeGenerateResponse> generate(@RequestBody QrCodeGeneratedRequest request){
-      try {
-          QrCodeGenerateResponse response = this.qrCodeService.generateAndUploadQrCode(request.text());
-          return ResponseEntity.ok(response);
-      }   catch(Exception e){
-        e.printStackTrace(); // ou logger.error("Erro ao gerar QR", e);
-        return ResponseEntity.internalServerError().build();
+    public ResponseEntity<QrCodeGenerateResponse> generate(@RequestBody QrCodeGeneratedRequest request) {
+        try {
+            QrCodeGenerateResponse response = this.qrCodeService.generateAndUploadQrCode(request.text());
+            return ResponseEntity.ok(response); // <-- Isso só funciona se 'response' tiver dados válidos
+        } catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build(); // <-- aqui não tem body
+        }
     }
 
-}
 
 }
