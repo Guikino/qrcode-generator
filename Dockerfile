@@ -6,20 +6,17 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-# Usando uma imagem base OpenJDK para o ambiente de execução
-FROM openjdk:21-jre
+# Usando a imagem base do OpenJDK 21
+FROM openjdk:21
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
 
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
+
 ARG CLOUDINARY_CLOUD_NAME
 ARG CLOUDINARY_API_KEY
 ARG CLOUDINARY_API_SECRET
 
-ENV AWS_REGION=us-east-1
-ENV AWS_S3_BUCKET=generate-qrcode-storage
 ENV CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
 ENV CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
 ENV CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
