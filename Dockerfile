@@ -1,4 +1,5 @@
-FROM maven:3.9.6-openjdk-21 AS build
+# Etapa de build
+FROM maven:3.9.6-openjdk-17 AS build
 WORKDIR /app
 
 COPY pom.xml /app/
@@ -6,12 +7,11 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests
 
-# Usando a imagem base do OpenJDK 21
-FROM openjdk:21
+# Usando OpenJDK para a imagem final
+FROM openjdk:21-jre
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
-
 
 ARG CLOUDINARY_CLOUD_NAME
 ARG CLOUDINARY_API_KEY
