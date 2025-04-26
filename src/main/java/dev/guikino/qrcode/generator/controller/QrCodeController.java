@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/qrcode")
-@CrossOrigin(origins = "http://localhost:5173") // libera pro seu frontend local
+@CrossOrigin(origins = "https://zappi-qr.vercel.app/") // libera pro seu frontend local
 public class QrCodeController {
     private final QrCodeGeneratorService qrCodeService;
 
