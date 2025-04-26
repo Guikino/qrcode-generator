@@ -4,31 +4,26 @@ import dev.guikino.qrcode.generator.dto.QrCodeGenerateResponse;
 import dev.guikino.qrcode.generator.dto.QrCodeGeneratedRequest;
 import dev.guikino.qrcode.generator.service.QrCodeGeneratorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/qrcode")
+@CrossOrigin(origins = "http://localhost:5173") // libera pro seu frontend local
 public class QrCodeController {
-  private final QrCodeGeneratorService qrCodeService;
+    private final QrCodeGeneratorService qrCodeService;
 
     public QrCodeController(QrCodeGeneratorService qrCodeService) {
         this.qrCodeService = qrCodeService;
     }
 
-    //post
     @PostMapping
     public ResponseEntity<QrCodeGenerateResponse> generate(@RequestBody QrCodeGeneratedRequest request) {
         try {
             QrCodeGenerateResponse response = this.qrCodeService.generateAndUploadQrCode(request.text());
-            return ResponseEntity.ok(response); // <-- Isso só funciona se 'response' tiver dados válidos
+            return ResponseEntity.ok(response);
         } catch(Exception e){
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build(); // <-- aqui não tem body
+            return ResponseEntity.internalServerError().build();
         }
     }
-
-
 }

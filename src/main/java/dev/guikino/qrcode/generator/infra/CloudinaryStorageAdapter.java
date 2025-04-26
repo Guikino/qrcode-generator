@@ -30,13 +30,9 @@ public class CloudinaryStorageAdapter implements StoragePort {
 
     @Override
     public String uploadFile(byte[] fileData, String fileName, String contentType) {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(fileData);
-            return uploadFile(inputStream);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao converter byte[] para upload no Cloudinary", e);
-        }
+        return uploadFile(new ByteArrayInputStream(fileData));
     }
+
 
     @Override
     public String uploadFile(ByteArrayInputStream inputStream) {
@@ -53,4 +49,5 @@ public class CloudinaryStorageAdapter implements StoragePort {
             throw new RuntimeException("Erro ao enviar imagem para o Cloudinary", e);
         }
     }
+
 }
