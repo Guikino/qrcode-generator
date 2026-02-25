@@ -16,6 +16,11 @@ public class QrCodeController {
         this.qrCodeService = qrCodeService;
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("API is up and running!");
+    }
+
     @PostMapping
     public ResponseEntity<QrCodeGenerateResponse> generate(@RequestBody QrCodeGeneratedRequest request) {
         try {
